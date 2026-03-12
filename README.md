@@ -72,10 +72,10 @@ These skills compose into a full research lifecycle. The two workflows can be us
 │         │                │                  │                │
 │         ▼                ▼                  ▼                │
 │   ┌──────────┐     ┌──────────┐       ┌──────────┐         │
-│   │ Search   │────▶│ Generate │──────▶│ Check if │         │
-│   │ arXiv,   │     │ 8-12     │       │ idea is  │         │
-│   │ Scholar  │     │ ideas    │       │ novel    │         │
-│   │ for gaps │     │ + rank   │       │          │         │
+│   │ Scan     │────▶│ Generate │──────▶│ Check if │         │
+│   │ local    │     │ 8-12     │       │ idea is  │         │
+│   │ papers + │     │ ideas    │       │ novel    │         │
+│   │ search   │     │ + rank   │       │          │         │
 │   └──────────┘     └──────────┘       └──────────┘         │
 │                          │                  │                │
 │                          ▼                  ▼                │
@@ -86,7 +86,7 @@ These skills compose into a full research lifecycle. The two workflows can be us
 │                    └──────────┘       └──────────┘         │
 │                                                              │
 │   Typical flow:                                              │
-│   1. /research-lit "discrete diffusion models"               │
+│   1. /research-lit "discrete diffusion models"  (local → online) │
 │   2. /idea-creator "DLLMs post training"               │
 │   3. Review ranked ideas, pick top 2-3                       │
 │   4. /novelty-check "top idea" (deep verification)           │
