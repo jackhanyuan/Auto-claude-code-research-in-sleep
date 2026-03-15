@@ -22,7 +22,7 @@ Custom [Claude Code](https://docs.anthropic.com/en/docs/claude-code) skills for 
 
 ## 📢 What's New
 
-- **2026-03-15** — 🔀 [Generic LLM support](#-alternative-model-combinations): any OpenAI-compatible API as reviewer via [`llm-chat`](mcp-servers/llm-chat/) MCP server. GLM, Kimi, LongCat, DeepSeek, MiniMax — no Claude or OpenAI API required
+- **2026-03-15** — 🔀 **Bring your own model!** [Any OpenAI-compatible API](#-alternative-model-combinations) now works as reviewer via [`llm-chat`](mcp-servers/llm-chat/) MCP server. GLM, Kimi, LongCat, DeepSeek, MiniMax all tested — **zero Claude or OpenAI API needed**
 - **2026-03-14** — 📱 [Feishu/Lark integration](#-feishulark-integration-optional): three modes (off/push/interactive), mobile notifications for experiments, reviews, and checkpoints
 - **2026-03-13** — 🛑 Human-in-the-loop: configurable `AUTO_PROCEED` checkpoints across all workflows. Full autopilot or step-by-step approval
 - **2026-03-12** — 🔗 [Zotero](#-zotero-integration-optional) + [Obsidian](#-obsidian-integration-optional) + local PDFs + arXiv/Scholar: multi-source literature search with cross-model novelty verification
