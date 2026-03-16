@@ -141,12 +141,6 @@ claude
 | Skill | 📐 [`proof-writer`](skills/proof-writer/SKILL.md) | ML 理论 | 严格的定理/引理证明撰写——可行性分类、依赖图谱、诚实的阻塞报告。搭配工作流 3（`/paper-writing`）写理论章节，或工作流 2（`/auto-review-loop`）修补 reviewer 指出的证明漏洞 | 否 |
 | Docs | 🐾 [OpenClaw 适配指南](docs/OPENCLAW_ADAPTATION.md) | 通用 | 在 [OpenClaw](https://github.com/All-Hands-AI/OpenHands) 中使用 ARIS 工作流方法论——skill 到阶段映射、文件化编排，无需 Claude Code CLI | 否 |
 
-> **⭐ 推荐：[`research-refine`](skills/research-refine/SKILL.md)** — 填补了“研究什么”到“怎么研究”之间的空白。接入 ARIS 流水线：
->
-> `/idea-discovery` → **`/research-refine`** → `/auto-review-loop` → `/paper-writing`
->
-> 模糊想法 → 排名后的 idea → **可执行研究方案** → 精修论文
-
 ## 🔄 工作流
 
 所有 Skills 组成完整科研流水线。三个工作流可以单独使用，也可以串联：
