@@ -9,10 +9,12 @@
 ![分数曲线](docs/auto_review_score_curve.png)
 
 > 🌙 **让 Claude Code 在你睡觉时做科研。** 醒来发现论文已被打分、弱点已被定位、实验已跑完、叙事已重写——全自动。
+>
+> 🪶 **极致轻量。** ARIS 就是一堆 Markdown 文件——没有框架、没有数据库、没有 Docker、没有守护进程。每个 skill 就是一个 `SKILL.md`，任何 LLM 系统都能读、能改、能跑。今天用 Claude Code，明天换 [OpenClaw](docs/OPENCLAW_ADAPTATION.md)，后天接你自己的 agent——思想可迁移，不绑定任何平台。
 
 [![PaperWeekly 收录](https://img.shields.io/badge/PaperWeekly-收录-red?style=flat)](https://mp.weixin.qq.com/s/tDniVryVGjDkkkWl-5sTkQ) · [![Featured in awesome-agent-skills](https://img.shields.io/badge/Featured%20in-awesome--agent--skills-blue?style=flat&logo=github)](https://github.com/VoltAgent/awesome-agent-skills) · [![AI Digital Crew - Project of the Day](https://img.shields.io/badge/AI%20Digital%20Crew-Project%20of%20the%20Day%20(2026.03.14)-orange?style=flat)](https://aidigitalcrew.com) · [💬 加入交流群](#-交流群) · [![引用](https://img.shields.io/badge/📖_引用-BibTeX-green?style=flat)](#-引用)
 
-基于 [Claude Code](https://docs.anthropic.com/en/docs/claude-code) 的自定义 Skills，用于自主 ML 科研工作流。核心机制是**跨模型协作**——Claude Code 负责执行（读文件、写代码、跑实验、收结果），外部 LLM（通过 [Codex MCP](https://github.com/openai/codex)）负责评审（打分、找弱点、建议修复）。两个模型互不评自己的作业，形成真正的反馈循环。🔀 **也支持[替代模型组合](#-替代模型组合)（GLM、MiniMax、Kimi、LongCat、DeepSeek 等）——无需 Claude 或 OpenAI API。**
+基于 [Claude Code](https://docs.anthropic.com/en/docs/claude-code) 的自定义 Skills，用于自主 ML 科研工作流。核心机制是**跨模型协作**——Claude Code 负责执行（读文件、写代码、跑实验、收结果），外部 LLM（通过 [Codex MCP](https://github.com/openai/codex)）负责评审（打分、找弱点、建议修复）。两个模型互不评自己的作业，形成真正的反馈循环。🔀 **也支持[替代模型组合](#-替代模型组合)（GLM、MiniMax、Kimi、LongCat、DeepSeek 等）——无需 Claude 或 OpenAI API。** 🆓 **[ModelScope 免费接入](docs/MODELSCOPE_GUIDE.md)——零成本，零锁定。**
 
 > 💭 **为什么不用单模型自我博弈？** 用 Claude Code 的 subagent 或 agent team 同时做执行和审稿在技术上可行，但容易陷入**局部最优**——同一个模型审自己的输出会产生盲区。
 >
