@@ -21,16 +21,16 @@
 git clone https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep.git
 ```
 
-Keep the repo accessible — you will `@`-reference skill files from it.
+> **Important:** Open this repo (or add it as a workspace folder) in Cursor. The `@skills/...` references throughout this guide use Cursor's `@`-file feature, which only resolves files within your open workspace. If you work in a separate project, either copy the `skills/` folder into it or add the ARIS repo as a second workspace folder (File → Add Folder to Workspace).
 
 ### 2.2 Set up Codex MCP in Cursor (for review skills)
 
 ARIS uses an external LLM (GPT-5.4 via Codex) as a critical reviewer. To enable this in Cursor:
 
-1. Install Codex CLI:
+1. Install Codex CLI and authenticate:
    ```bash
    npm install -g @openai/codex
-   codex setup   # set model to gpt-5.4 when prompted
+   codex login   # authenticate with your ChatGPT or API key
    ```
 
 2. Add MCP server in Cursor — create or edit `.cursor/mcp.json` in your project root:
@@ -51,21 +51,31 @@ ARIS uses an external LLM (GPT-5.4 via Codex) as a critical reviewer. To enable 
 
 If you don't have an OpenAI API key, use the [`llm-chat`](../mcp-servers/llm-chat/) MCP server with any OpenAI-compatible API (DeepSeek, GLM, MiniMax, Kimi, etc.):
 
-```json
-{
-  "mcpServers": {
-    "llm-chat": {
-      "command": "python3",
-      "args": ["/path/to/Auto-claude-code-research-in-sleep/mcp-servers/llm-chat/server.py"],
-      "env": {
-        "LLM_BASE_URL": "https://api.deepseek.com/v1",
-        "LLM_API_KEY": "your_key",
-        "LLM_MODEL": "deepseek-chat"
-      }
-    }
-  }
-}
-```
+1. Create a virtual environment and install the required dependency (the server needs `httpx`):
+   ```bash
+   cd /path/to/Auto-claude-code-research-in-sleep
+   python3 -m venv .venv
+   .venv/bin/pip install httpx
+   ```
+
+2. Add MCP server in Cursor — create or edit `.cursor/mcp.json`. Both paths must be **absolute** — `command` points to the venv python (not system python, otherwise `httpx` won't be found), and `args` points to the server script:
+   ```json
+   {
+     "mcpServers": {
+       "llm-chat": {
+         "command": "/path/to/Auto-claude-code-research-in-sleep/.venv/bin/python3",
+         "args": ["/path/to/Auto-claude-code-research-in-sleep/mcp-servers/llm-chat/server.py"],
+         "env": {
+           "LLM_BASE_URL": "https://api.deepseek.com/v1",
+           "LLM_API_KEY": "your_key",
+           "LLM_MODEL": "deepseek-chat"
+         }
+       }
+     }
+   }
+   ```
+
+3. Restart Cursor. Verify the MCP server appears (green dot) under Settings → Features → MCP. If it shows a red dot, check `/tmp/llm-chat-mcp-debug.log` for errors.
 
 See [LLM_API_MIX_MATCH_GUIDE.md](LLM_API_MIX_MATCH_GUIDE.md) for tested provider configurations.
 
@@ -124,14 +134,16 @@ Copy the relevant workflow instructions directly into the chat. Best for quick, 
 
 Run the full idea discovery pipeline for "your research direction".
 
-Use these sub-skills in sequence:
+Use these sub-skills in sequence (the SKILL.md references them as
+/skill-name which is Claude Code syntax — use these @-references instead):
 1. @skills/research-lit/SKILL.md — literature survey
 2. @skills/idea-creator/SKILL.md — brainstorm ideas
 3. @skills/novelty-check/SKILL.md — verify novelty
 4. @skills/research-review/SKILL.md — critical review
+5. @skills/research-refine-pipeline/SKILL.md — refine method + plan experiments
 ```
 
-> **Tip:** Cursor's context window may be smaller than Claude Code's. For long pipelines, run each phase in a separate chat and pass results via files (e.g., `IDEA_REPORT.md`).
+> **Tip:** Cursor's context window may be smaller than Claude Code's. For long pipelines, run each phase in a separate chat and pass results via files (e.g., `IDEA_REPORT.md`, `refine-logs/FINAL_PROPOSAL.md`).
 
 ### Workflow 1.5: Experiment Bridge
 
@@ -179,20 +191,29 @@ Use MCP tool mcp__codex__codex for external review.
 @NARRATIVE_REPORT.md
 
 Run the full paper writing pipeline from NARRATIVE_REPORT.md.
+
+Sub-skills to use in sequence (replace /skill-name from SKILL.md):
+1. @skills/paper-plan/SKILL.md — outline + claims-evidence matrix
+2. @skills/paper-figure/SKILL.md — generate plots and tables
+3. @skills/paper-write/SKILL.md — write LaTeX sections
+4. @skills/paper-compile/SKILL.md — build PDF
+5. @skills/auto-paper-improvement-loop/SKILL.md — review and polish
 ```
 
 ### Full Pipeline
 
 For the full pipeline (`/research-pipeline`), break it into stages across chat sessions:
 
-| Stage | What to do | Output file |
+| Stage | What to do | Output files |
 |-------|-----------|-------------|
-| 1 | `@skills/idea-discovery/SKILL.md` + your direction | `IDEA_REPORT.md` |
-| 2 | `@skills/experiment-bridge/SKILL.md` + `@IDEA_REPORT.md` | Experiment scripts |
+| 1 | `@skills/idea-discovery/SKILL.md` + your direction | `IDEA_REPORT.md`, `refine-logs/FINAL_PROPOSAL.md`, `refine-logs/EXPERIMENT_PLAN.md` |
+| 2 | `@skills/experiment-bridge/SKILL.md` + `@refine-logs/EXPERIMENT_PLAN.md` + `@refine-logs/FINAL_PROPOSAL.md` | Experiment scripts, results |
 | 3 | `@skills/auto-review-loop/SKILL.md` + your topic | `AUTO_REVIEW.md` |
 | 4 | `@skills/paper-writing/SKILL.md` + `@NARRATIVE_REPORT.md` | `paper/` directory |
 
 Each stage reads the previous stage's output files, so context carries forward even across sessions.
+
+> **Note:** Stage 4 expects a `NARRATIVE_REPORT.md` describing your research story (claims, experiments, results). This is typically written by you based on `AUTO_REVIEW.md` and experiment results — see [NARRATIVE_REPORT_EXAMPLE.md](NARRATIVE_REPORT_EXAMPLE.md) for the expected format.
 
 ## 5. MCP Tool Calls
 
@@ -203,8 +224,8 @@ ARIS skills reference MCP tools by name (e.g., `mcp__codex__codex`). Cursor supp
 | `mcp__codex__codex` | Send prompt to GPT-5.4 | Codex |
 | `mcp__codex__codex-reply` | Continue conversation thread | Codex |
 | `mcp__llm-chat__chat` | Send prompt to any OpenAI-compatible model | llm-chat |
-| `mcp__zotero__*` | Search Zotero library | zotero-mcp |
-| `mcp__obsidian-vault__*` | Search Obsidian vault | mcpvault |
+| `mcp__zotero__*` | Search Zotero library | zotero (name may vary by config) |
+| `mcp__obsidian-vault__*` | Search Obsidian vault | obsidian-vault (name may vary by config) |
 
 ## 6. State Files & Recovery
 
@@ -218,6 +239,7 @@ ARIS workflows persist state to files for crash recovery. These work identically
 | `PAPER_PLAN.md` | Paper outline + claims-evidence matrix | `/paper-plan` |
 | `refine-logs/FINAL_PROPOSAL.md` | Refined method proposal | `/research-refine` |
 | `refine-logs/EXPERIMENT_PLAN.md` | Experiment roadmap | `/experiment-plan` |
+| `refine-logs/EXPERIMENT_TRACKER.md` | Run-by-run execution status | `/experiment-plan` |
 
 If a Cursor chat session ends mid-workflow, start a new session and reference the state file:
 
@@ -249,6 +271,8 @@ Deploy the training script to the remote GPU server.
 | No auto-compact recovery | Use `REVIEW_STATE.json` to resume manually across sessions |
 | `allowed-tools` not enforced | Cursor agent has access to all its tools by default — not a problem in practice |
 | Skills reference `$ARGUMENTS` | Replace with your actual arguments in the prompt |
+| SKILL.md files use `/skill-name` to call sub-skills | Cursor ignores these. For pipeline skills (`idea-discovery`, `paper-writing`), list the sub-skill `@` references explicitly in your prompt — see Workflow 1 and 3 examples |
+| `@skills/...` requires workspace access | The ARIS repo (or its `skills/` folder) must be in your Cursor workspace — see Setup §2.1 |
 
 ## 9. Quick Reference
 
