@@ -7,7 +7,7 @@
 | 概念 | Claude Code | Trae |
 |---|---|---|
 | Skill 调用 | `/skill-name "args"`（斜杠命令） | 自然语言自动发现、`#` 快速匹配、`@skills/.../SKILL.md`（文件引用） |
-| Skill 存放 | `~/.claude/skills/...` | 全局 `.trae/skills/` 或项目 `.trae/skills/`（跨项目可用），或直接引用 ARIS 仓库 `skills/` |
+| Skill 存放 | `~/.claude/skills/...` | 全局 `~/.trae/skills/`（跨项目可用）或项目 `<project>/.trae/skills/`（仅当前项目），或直接引用 ARIS 仓库 `skills/` |
 | MCP 配置 | `claude mcp add ...` | `Settings → MCP → 手动添加` |
 | Agent 执行 | 持续 CLI 会话 | Chat/Agent 会话 |
 | 文件引用 | 自动读项目 | `@filename` 显式附加上下文 |

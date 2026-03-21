@@ -7,7 +7,7 @@ Use ARIS research workflows in Trae without relying on Claude Code `/skill-name`
 | Concept | Claude Code | Trae |
 |---|---|---|
 | Skill invocation | `/skill-name "args"` (slash command) | Natural language auto-discovery, `#` quick match, `@skills/.../SKILL.md` (file reference) |
-| Skill storage | `~/.claude/skills/...` | Global `.trae/skills/` or project `.trae/skills/` (cross-project available), or directly reference ARIS repo `skills/` |
+| Skill storage | `~/.claude/skills/...` | Global `~/.trae/skills/` (cross-project available) or project `<project>/.trae/skills/` (current project only), or directly reference ARIS repo `skills/` |
 | MCP setup | `claude mcp add ...` | `Settings → MCP → Manual Add` |
 | Agent execution | Persistent CLI session | Chat/Agent session |
 | File references | Auto-read from project | Explicit `@filename` attachment |
